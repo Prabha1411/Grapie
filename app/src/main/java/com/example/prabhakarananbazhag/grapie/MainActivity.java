@@ -12,6 +12,9 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -24,29 +27,32 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 public class MainActivity extends AppCompatActivity {
-static final String NODE_CANVAS="canvas";
-static final String NODE_TEAM="team";
-int X,Y,Width,Height,Trans;
-    ArrayList<String > teamname=new ArrayList<>();
-    ArrayList<Float> matches=new ArrayList<>();
-    ArrayList<String > colour=new ArrayList<>();
-    //PieChartData pieChartData;,Right,Bottom
+    //static final String NODE_CANVAS="canvas";
+//static final String NODE_TEAM="team";
+//int X,Y,Width,Height,Trans;
+   /* ArrayList<String> teamname = new ArrayList<>();
+    ArrayList<Float> matches = new ArrayList<>();
+    ArrayList<String> colour = new ArrayList<>();*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        MyCanvas mc = (MyCanvas) findViewById(R.id.grap);
 
-        XMLDOMParser parser = new XMLDOMParser();
+ /*       XMLDOMParser parser = new XMLDOMParser();
         AssetManager manager = getAssets();
         InputStream stream;
         try {
             stream = manager.open("data.xml");
             Document doc = parser.getDocument(stream);
+
 
             NodeList nodeList = doc.getElementsByTagName(NODE_CANVAS);
                 Element e = (Element) nodeList.item(0);
@@ -55,11 +61,7 @@ int X,Y,Width,Height,Trans;
                 Width=Integer.parseInt(parser.getValue(e,"width"));
                 Height=Integer.parseInt(parser.getValue(e,"height"));
 
-          //  NodeList cirlcelist=doc.getElementsByTagName("circle_radius");
-            // Element e1=(Element)cirlcelist.item(0);
-            //Radius=Integer.parseInt(parser.getValue(e1,"circle_radius"));
-            // Radius=Integer.parseInt(doc.getElementsByTagName("circle_radius").item(0).getTextContent());
-               //Log.i("helo","Radius");
+
             NodeList nodeList1=doc.getElementsByTagName(NODE_TEAM);
 
                 for(int i=0;i<nodeList1.getLength();i++){
@@ -69,50 +71,67 @@ int X,Y,Width,Height,Trans;
                     colour.add(parser.getValue(team,"colour"));
                 }
 
-            NodeList nodeList2=doc.getElementsByTagName("Trans");
+          NodeList nodeList2=doc.getElementsByTagName("Trans");
         } catch (IOException e1) {
             e1.printStackTrace();
-        }
+        }*/
 
 
-       PieChartData obj=new PieChartData(X,Y,Height,Width,Trans,teamname,matches,colour);
-
-
-//for (Float i:matches)
-//    Log.i("x", String.valueOf(i));
-
+       // PieChartData obj = new PieChartData(teamname, matches, colour);
+       /*RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.grap);
         RelativeLayout relativeLayout=(RelativeLayout)findViewById(R.id.rel);
         RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(Width,Height);
         params.leftMargin=X;
-        params.topMargin=Y;
-        MyCanvas mc=new MyCanvas(this);
+        params.topMargin=Y;*/
 
-        mc.setLayoutParams(new ViewGroup.LayoutParams(Width,Height));
-
+       /* mc.setLayoutParams(new ViewGroup.LayoutParams(Width,Height));
         mc.setBackgroundColor(Color.GRAY);
+        relativeLayout.addView(mc,params);*/
 
-        /*obj.getTrans();
-        float conversion;
-        conversion=255-((Trans*100)/255);
-      mc.getBackground().setAlpha((int) conversion);
-      Log.i("haka", String.valueOf(conversion));
-*/
-        relativeLayout.addView(mc,params);
-        mc.setdata(obj);
+       mc.setdata(getjson());
     }
 
+public  ArrayList<HashMap<String, String>> getjson(){
+    ArrayList<HashMap<String, String>> formList=null;
+    try {
+        JSONObject obj = new JSONObject(loadJSONFromAsset());
+        JSONArray m_jArry = obj.getJSONArray("team");
+         formList = new ArrayList<HashMap<String, String>>();
+        HashMap<String, String> m_li;
 
+        for (int i = 0; i < m_jArry.length(); i++) {
+            JSONObject jo_inside = m_jArry.getJSONObject(i);
+           // Log.d("Details-->", jo_inside.getString("name"));
+            String name_value = jo_inside.getString("name");
+            String matches_value = jo_inside.getString("matches");
+            String colour_value=jo_inside.getString("colour");
+            //Add your values in your `ArrayList` as below:
+            m_li = new HashMap<String, String>();
+            m_li.put("name", name_value);
+            m_li.put("matches", matches_value);
+            m_li.put("colour",colour_value);
 
-
-
-
-        //View view =new RelativeLayout.LayoutParams(R.id.rel);
-
-//       Bundle b=getIntent().getExtras();
-//       PieChartData r=(PieChartData)b.getSerializable("rect");
-//        setContentView(new MyCanvas(this,r));
-
-
+            formList.add(m_li);
+        }
+    } catch (JSONException e) {
+        e.printStackTrace();
+    }
+    return formList;
+    }
+    public String loadJSONFromAsset() {
+        String json = null;
+        try {
+            InputStream is = getAssets().open("infor.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
     }
 
-
+}

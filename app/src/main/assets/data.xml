@@ -1,13 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <graph>
-   <canvas>
-    <value_x>100</value_x>
-    <value_y>100</value_y>
-    <width>750</width>
-    <height>750</height>
-   </canvas>
-    <Trans>100</Trans>
-    <cricket>
+
         <team>
             <name>India</name>
             <matches>100</matches>
@@ -39,8 +32,4 @@
             <colour>#510602</colour>
         </team>
 
-
-
-
-    </cricket>
 </graph>
