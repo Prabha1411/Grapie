@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<graph>
+   <canvas>
+    <value_x>100</value_x>
+    <value_y>100</value_y>
+    <width>750</width>
+    <height>750</height>
+   </canvas>
+    <Trans>100</Trans>
+    <cricket>
+        <team>
+            <name>India</name>
+            <matches>100</matches>
+            <colour>#0F8BFE</colour>
+        </team>
+        <team>
+            <name>RSA</name>
+            <matches>50</matches>
+            <colour>#05F52D</colour>
+        </team>
+        <team>
+            <name>Australia</name>
+            <matches>20</matches>
+            <colour>#F8ED06</colour>
+        </team>
+        <team>
+            <name>Pakistan</name>
+            <matches>60</matches>
+            <colour>#1B4702</colour>
+        </team>
+        <team>
+            <name>England</name>
+            <matches>80</matches>
+            <colour>#0611F8</colour>
+        </team>
+        <team>
+            <name>West Indies</name>
+            <matches>50</matches>
+            <colour>#510602</colour>
+        </team>
+
+
+
+
+    </cricket>
+</graph>
